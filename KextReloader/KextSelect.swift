@@ -8,16 +8,16 @@
 
 import Cocoa
 
-class KextSelect: NSWindowController, NSWindowDelegate {
+class KextSelect: NSWindowController, NSWindowDelegate, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet var vwProgress: NSView!;
-    @IBOutlet var vwKextTable: NSTableView!;
-    @IBOutlet var arrayController: NSArrayController!;
-    
+    @IBOutlet var vwKextTable: NSScrollView!;
+
     @IBOutlet var lblFileName: NSTextField!;
     @IBOutlet var lblCurrentCount: NSTextField!;
     @IBOutlet var lblTotalCount: NSTextField!;
     @IBOutlet var lblPercentage: NSTextField!;
     @IBOutlet var piProgress: NSProgressIndicator!;
+    @IBOutlet var colLoaded:NSTableColumn!;
     
     private var _km: KextManager!;
      
@@ -40,23 +40,29 @@ class KextSelect: NSWindowController, NSWindowDelegate {
         self.window?.showsResizeIndicator = false;
         self.window?.makeKeyAndOrderFront(self);
         
-        var _km = KextManager();
+        self._km = KextManager(checkForLoaded: false);
         var kmq = dispatch_queue_create("kextManagerQueue", DISPATCH_QUEUE_CONCURRENT);
         
-        arrayController.content?.removeAllObjects();
-        
         dispatch_async(kmq) {
-            _km.loadData(self.onDataLoading);
+            self._km.loadData(self.onDataLoading);
             
             dispatch_async(dispatch_get_main_queue()) {
                 NSLog("Async Operation Complete");
                 
                 self.window?.contentView = self.vwKextTable;
+                self.colLoaded.hidden = !self._km.checkLoaded;
+                
                 return;
             }
         }
         
         NSLog("Kext Select Window Loaded");        
+    }
+    
+    
+    @IBAction func onCheckboxClick(sender: NSTableView) {
+        var rowIndex = sender.clickedRow;
+        var obj = self._km.getAtIndex(rowIndex);
     }
     
     func onDataLoading(e: KextObjectEventArgs) {
@@ -71,8 +77,6 @@ class KextSelect: NSWindowController, NSWindowDelegate {
         self.lblCurrentCount.integerValue = e.currentCount;
         self.lblTotalCount.integerValue = e.totalCount;
         self.lblPercentage.integerValue = Int(percentComplete);
-        
-        arrayController.addObject(e.item);
     }
     
     func windowShouldClose(sender: AnyObject) -> Bool {
@@ -80,36 +84,41 @@ class KextSelect: NSWindowController, NSWindowDelegate {
         return true;
     }
     
-//    func numberOfRowsInTableView(aTableView: NSTableView!) -> Int
-//    {
-//        return _km.data.count;
-//    }
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+        if(_km == nil) {
+            return 0;
+        }
+        
+        let numberOfRows:Int = _km.data.count;
+        return numberOfRows;
+    }
     
-//    func tableView(tableView: NSTableView!, objectValueForTableColumn tableColumn: NSTableColumn!, row: Int) -> AnyObject!
-//    {
-//        var retVal: AnyObject?;
-//        var item = _km.getAtIndex(row);
-//        
-//        switch(tableColumn.identifier) {
-//            case "bundleId":
-//                retVal = item.bundleId;
-//                break;
-//            case "execName":
-//                retVal = item.execName;
-//                break;
-//            case "isLoaded":
-//                retVal = item.isLoaded;
-//                break;
-//            case "isSelected":
-//                retVal = item.isSelected;
-//                break;
-//            case "name":
-//                retVal = item.name;
-//            default:
-//            
-//                break;
-//        }
-//        
-//        return retVal;
-//    }
+    func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn, row: Int) -> AnyObject? {
+        var retVal: AnyObject?;
+        var item = _km.getAtIndex(row);
+        
+        let id = tableColumn.identifier as String;
+        
+        switch(id) {
+            case "bundleId":
+                retVal = item.bundleId;
+                break;
+            case "execName":
+                retVal = item.execName;
+                break;
+            case "isLoaded":
+                retVal = item.isLoaded;
+                break;
+            case "isSelected":
+                retVal = item.isSelected;
+                break;
+            case "name":
+                retVal = item.name;
+            default:
+                
+                break;
+        }
+        
+        return retVal;
+    }
 }

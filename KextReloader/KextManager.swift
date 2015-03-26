@@ -38,9 +38,22 @@ class KextManager: NSObject {
         }
     }
     
-//    init() {
-//        NSLog("KextManger Init()");
-//    }
+    var _checkLoaded:Bool = false;
+    var checkLoaded: Bool {
+        get {
+            return _checkLoaded;
+        }
+    }
+    
+    override init() {
+        super.init();
+        
+        NSLog("KextManger Init()");
+    }
+    
+    init(checkForLoaded:Bool) {
+        self._checkLoaded = checkForLoaded;
+    }
     
     func addKextObject(kextObject:KextObject) {
         _data.append(kextObject);
@@ -59,9 +72,14 @@ class KextManager: NSObject {
         
         for(var i:Int = 0; i < kextObjects.count; i++) {
             var obj = kextObjects[i];
-            //obj.isLoaded = self.isKextLoaded(obj.bundleId);
-            obj.isLoaded = false;
             
+            if(self._checkLoaded) {
+                obj.isLoaded = self.isKextLoaded(obj.bundleId);
+            } else {
+                obj.isLoaded = false;
+            }
+            
+            self.addKextObject(obj);
             var e = KextObjectEventArgs(totalCount: kextObjects.count, currentCount: i + 1, item: obj);
             action(e);
         }
