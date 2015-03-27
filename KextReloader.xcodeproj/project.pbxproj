@@ -12,9 +12,12 @@
 		DB04BC591A32423900864EA5 /* KextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB04BC581A32423900864EA5 /* KextManager.swift */; };
 		DB04BC5B1A32453200864EA5 /* KextSelect.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB04BC5A1A32453200864EA5 /* KextSelect.xib */; };
 		DB04BC601A3245F600864EA5 /* KextSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB04BC5F1A3245F600864EA5 /* KextSelect.swift */; };
+		DB357B931AC49E6E00F5CBE1 /* KextData.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB357B921AC49E6E00F5CBE1 /* KextData.plist */; };
+		DB357B971AC49F1F00F5CBE1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB8D961E1A31F2F500FE170E /* MainMenu.xib */; };
+		DB357B991AC4A42300F5CBE1 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB357B981AC4A42300F5CBE1 /* Preferences.xib */; };
+		DB357B9B1AC4A47000F5CBE1 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB357B9A1AC4A47000F5CBE1 /* Preferences.swift */; };
 		DB8D961B1A31F2F500FE170E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D961A1A31F2F500FE170E /* AppDelegate.swift */; };
 		DB8D961D1A31F2F500FE170E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB8D961C1A31F2F500FE170E /* Images.xcassets */; };
-		DB8D96201A31F2F500FE170E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB8D961E1A31F2F500FE170E /* MainMenu.xib */; };
 		DB8D962C1A31F2F600FE170E /* KextReloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D962B1A31F2F600FE170E /* KextReloaderTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +37,9 @@
 		DB04BC581A32423900864EA5 /* KextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KextManager.swift; sourceTree = "<group>"; };
 		DB04BC5A1A32453200864EA5 /* KextSelect.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KextSelect.xib; sourceTree = "<group>"; };
 		DB04BC5F1A3245F600864EA5 /* KextSelect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KextSelect.swift; sourceTree = "<group>"; };
+		DB357B921AC49E6E00F5CBE1 /* KextData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KextData.plist; sourceTree = "<group>"; };
+		DB357B981AC4A42300F5CBE1 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		DB357B9A1AC4A47000F5CBE1 /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		DB8D96151A31F2F500FE170E /* KextReloader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KextReloader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB8D96191A31F2F500FE170E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB8D961A1A31F2F500FE170E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +73,7 @@
 			children = (
 				DB04BC5A1A32453200864EA5 /* KextSelect.xib */,
 				DB8D961E1A31F2F500FE170E /* MainMenu.xib */,
+				DB357B981AC4A42300F5CBE1 /* Preferences.xib */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -76,6 +83,7 @@
 			children = (
 				DB04BC501A32020F00864EA5 /* MainMenu.swift */,
 				DB04BC5F1A3245F600864EA5 /* KextSelect.swift */,
+				DB357B9A1AC4A47000F5CBE1 /* Preferences.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -132,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				DB8D96191A31F2F500FE170E /* Info.plist */,
+				DB357B921AC49E6E00F5CBE1 /* KextData.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -197,7 +206,7 @@
 		DB8D960D1A31F2F500FE170E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = "Solaic Software";
 				TargetAttributes = {
 					DB8D96141A31F2F500FE170E = {
@@ -233,10 +242,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB8D961D1A31F2F500FE170E /* Images.xcassets in Resources */,
-				DB8D96201A31F2F500FE170E /* MainMenu.xib in Resources */,
-				DB04BC561A3217D900864EA5 /* KextReloaderIcon32_v2.png in Resources */,
+				DB357B991AC4A42300F5CBE1 /* Preferences.xib in Resources */,
+				DB357B971AC49F1F00F5CBE1 /* MainMenu.xib in Resources */,
 				DB04BC5B1A32453200864EA5 /* KextSelect.xib in Resources */,
+				DB8D961D1A31F2F500FE170E /* Images.xcassets in Resources */,
+				DB04BC561A3217D900864EA5 /* KextReloaderIcon32_v2.png in Resources */,
+				DB357B931AC49E6E00F5CBE1 /* KextData.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +267,7 @@
 			files = (
 				DB8D961B1A31F2F500FE170E /* AppDelegate.swift in Sources */,
 				DB04BC591A32423900864EA5 /* KextManager.swift in Sources */,
+				DB357B9B1AC4A47000F5CBE1 /* Preferences.swift in Sources */,
 				DB04BC511A32020F00864EA5 /* MainMenu.swift in Sources */,
 				DB04BC601A3245F600864EA5 /* KextSelect.swift in Sources */,
 			);

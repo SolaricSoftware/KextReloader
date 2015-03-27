@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class MainMenu: NSObject {
+class MainMenu: NSObject, NSWindowDelegate {
     @IBOutlet var menu: NSMenu!;
     @IBOutlet var miLoad: NSMenuItem!;
     
@@ -38,26 +38,40 @@ class MainMenu: NSObject {
         TransformProcessType(&psn, ProcessApplicationTransformState(kProcessTransformToForegroundApplication));
         
         _controller = KextSelect();
+        _controller.window?.delegate = self;
         _controller.showWindow(self);
         
-//        var km:KextManager = KextManager(kextObjectLoaded);
-        
-        //(_controller as KextSelect).kextManager.data.count;
+        disableMenuItems(true);
     }
-    
-//    func kextObjectLoaded(e: KextObjectEventArgs) {
-//        NSLog("Name: %@", e.item.name);
-//
-//        (_controller as KextSelect).lblFileName.stringValue = e.item.name;
-//        (_controller as KextSelect).piProgress.doubleValue = Double(e.currentCount / e.totalCount);
-//    }
     
     @IBAction func menuItemPreferencesSelected(sender: NSMenuItem) {
         NSLog("Preferences Selected");
+        
+        var psn: ProcessSerialNumber = ProcessSerialNumber(highLongOfPSN: 0, lowLongOfPSN: 2);
+        TransformProcessType(&psn, ProcessApplicationTransformState(kProcessTransformToForegroundApplication));
+        
+        _controller = Preferences();
+        _controller.window?.delegate = self;
+        _controller.showWindow(self);
+        
+        disableMenuItems(true);
     }
     
     @IBAction func menuItemQuitSelected(sender: NSMenuItem) {
         NSLog("Quit Selected");
         NSRunningApplication.currentApplication().terminate();
+    }
+    
+    func windowWillClose(notification: NSNotification) {
+        var psn: ProcessSerialNumber = ProcessSerialNumber(highLongOfPSN: 0, lowLongOfPSN: 2);
+        TransformProcessType(&psn, ProcessApplicationTransformState(kProcessTransformToUIElementApplication));
+        
+        disableMenuItems(false);
+    }
+    
+    private func disableMenuItems(disable: Bool) {
+        for menuItem in self.menu.itemArray as [NSMenuItem] {
+            menuItem.enabled = !disable;
+        }
     }
 }

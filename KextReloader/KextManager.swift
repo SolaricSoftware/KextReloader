@@ -45,13 +45,13 @@ class KextManager: NSObject {
         }
     }
     
-    override init() {
-        super.init();
-        
-        NSLog("KextManger Init()");
-    }
+//    override init() {
+//        super.init();
+//    }
     
     init(checkForLoaded:Bool) {
+        super.init();
+        
         self._checkLoaded = checkForLoaded;
     }
     
@@ -65,6 +65,28 @@ class KextManager: NSObject {
         }
         
         return _data[index];
+    }
+    
+    func saveData() {
+        let path = NSBundle.mainBundle().pathForResource("KextData", ofType: "plist");
+        var plist = NSMutableDictionary(contentsOfFile: path!);
+        plist?.removeAllObjects();
+        
+        for i in 0...(self.data.count-1) {
+            var obj = self.getAtIndex(i);
+            
+            if(obj.isSelected) {
+                var objDic = NSMutableDictionary();
+                objDic.setObject(obj.isSelected, forKey: "isSelected");
+                objDic.setObject(obj.name, forKey: "name");
+                objDic.setObject(obj.bundleId, forKey: "bundleId");
+                objDic.setObject(obj.execName, forKey: "fileName");
+                
+                plist?.setObject(objDic, forKey: obj.execName);
+            }
+        }
+        
+        plist?.writeToFile(path!, atomically: true);
     }
     
     func loadData(action: (KextObjectEventArgs) -> Void) {
@@ -88,6 +110,8 @@ class KextManager: NSObject {
     private func getKextObjects() -> [KextObject] {
         var retVal: [KextObject] = [];
         let fm = NSFileManager.defaultManager();
+        let path = NSBundle.mainBundle().pathForResource("KextData", ofType: "plist");
+        var plistDic = path != nil ? NSDictionary(contentsOfFile: path!) : NSDictionary();
         
         var error:NSError?;
         if var files = fm.contentsOfDirectoryAtPath("/System/Library/Extensions/", error:&error) as [String]! {
@@ -109,7 +133,7 @@ class KextManager: NSObject {
                         let range2 = obj.bundleId.rangeOfString(".", options: NSStringCompareOptions.BackwardsSearch)!;
                         obj.name = obj.bundleId.substringFromIndex(range2.endIndex);
                         
-                        //obj.isLoaded = self.isKextLoaded(obj.bundleId);
+                        obj.isSelected = plistDic?.objectForKey(obj.execName) != nil;
                         
                         retVal.append(obj);
                     }

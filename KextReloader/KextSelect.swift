@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import AppKit
 
 class KextSelect: NSWindowController, NSWindowDelegate, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet var vwProgress: NSView!;
@@ -40,7 +41,7 @@ class KextSelect: NSWindowController, NSWindowDelegate, NSTableViewDataSource, N
         self.window?.showsResizeIndicator = false;
         self.window?.makeKeyAndOrderFront(self);
         
-        self._km = KextManager(checkForLoaded: false);
+        self._km = KextManager(checkForLoaded: include);
         var kmq = dispatch_queue_create("kextManagerQueue", DISPATCH_QUEUE_CONCURRENT);
         
         dispatch_async(kmq) {
@@ -61,8 +62,10 @@ class KextSelect: NSWindowController, NSWindowDelegate, NSTableViewDataSource, N
     
     
     @IBAction func onCheckboxClick(sender: NSTableView) {
-        var rowIndex = sender.clickedRow;
-        var obj = self._km.getAtIndex(rowIndex);
+        var obj = self._km.getAtIndex(sender.clickedRow);
+        obj.isSelected = !obj.isSelected;
+        
+        self._km.saveData();
     }
     
     func onDataLoading(e: KextObjectEventArgs) {
@@ -77,11 +80,6 @@ class KextSelect: NSWindowController, NSWindowDelegate, NSTableViewDataSource, N
         self.lblCurrentCount.integerValue = e.currentCount;
         self.lblTotalCount.integerValue = e.totalCount;
         self.lblPercentage.integerValue = Int(percentComplete);
-    }
-    
-    func windowShouldClose(sender: AnyObject) -> Bool {
-        NSLog("Window Closing"); 
-        return true;
     }
     
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
